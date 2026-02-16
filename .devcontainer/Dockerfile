@@ -11,30 +11,25 @@ RUN apt-get update && \
     git \
     libffi-dev \
     libssl-dev \
+    passwd \
     sudo \
     && \
     rm -rf /var/lib/apt/lists/*
 
 # Set up a non-root user for development
-RUN useradd -m -s /usr/bin/fish devuser && \
-    echo "devuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+ARG USERNAME=ubuntu
 
 # Switch to non-root user
-USER devuser
+USER $USERNAME
 WORKDIR /workspace
 
 # Update PATH to include uv
-ENV PATH="/home/devuser/.local/bin:/home/devuser/.cargo/bin:$PATH"
+ENV PATH="/home/$USERNAME/.local/bin:/home/$USERNAME/.cargo/bin:$PATH"
 
 # Install UV, Python 3.10, and create venv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
     uv python install 3.10 && \
-    uv venv ~/.venv --python 3.10
+    uv venv --python 3.10
 
-# Activate the virtual environment in the environment variables
-ENV VIRTUAL_ENV="/home/devuser/.venv"
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-ENV PYTHONPATH=/workspace
-
-# Default command
+# Default command and activate venv in fish
 CMD ["fish"]
