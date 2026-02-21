@@ -3,13 +3,7 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "containerEnv": {
-    "NVIDIA_VISIBLE_DEVICES": "void"
-  },
   "remoteUser": "ubuntu",
-  "remoteEnv": {
-    "SHELL": "/usr/bin/fish"
-  },
   "customizations": {
     "vscode": {
       "settings": {
