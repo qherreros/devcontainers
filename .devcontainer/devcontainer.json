@@ -1,13 +1,27 @@
 {
   "name": "Python 3.10 CUDA Dev Container",
   "build": {
-    "dockerfile": "Dockerfile",
+    "dockerfile": "Dockerfile"
   },
   "containerEnv": {
-    "NVIDIA_VISIBLE_DEVICES": "void",
+    "NVIDIA_VISIBLE_DEVICES": "void"
   },
   "remoteUser": "ubuntu",
+  "remoteEnv": {
+    "SHELL": "/usr/bin/fish"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "fish"
+      }
+    }
+  },
   "updateRemoteUserUID": true,
+  "mounts": [
+    "source=fish-history,target=/home/ubuntu/.local/share/fish,type=volume",
+    "source=${localEnv:HOME}/.gitconfig,target=/home/ubuntu/.gitconfig,type=bind,readonly"
+  ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-  "workspaceFolder": "/workspace",
+  "workspaceFolder": "/workspace"
 }

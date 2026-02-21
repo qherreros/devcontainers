@@ -21,6 +21,10 @@ ARG USERNAME=ubuntu
 
 # Switch to non-root user
 USER $USERNAME
+
+# Pre-create fish history directory so the named volume is initialized
+# with the correct ownership (created as ubuntu, not root)
+RUN mkdir -p /home/$USERNAME/.local/share/fish
 WORKDIR /workspace
 
 # Update PATH to include uv
