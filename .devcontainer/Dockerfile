@@ -12,7 +12,6 @@ RUN apt-get update && \
     libffi-dev \
     libssl-dev \
     openssh-client \
-    passwd \
     sudo \
     && \
     rm -rf /var/lib/apt/lists/*
