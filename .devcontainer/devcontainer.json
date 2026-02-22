@@ -12,10 +12,12 @@
     }
   },
   "updateRemoteUserUID": true,
+  "initializeCommand": "mkdir -p ${localEnv:HOME}/.cache/huggingface",
   "mounts": [
     "source=fish-history,target=/home/ubuntu/.local/share/fish,type=volume",
     "source=${localEnv:HOME}/.ssh,target=/home/ubuntu/.ssh,type=bind,readonly",
-    "source=${localEnv:HOME}/.gitconfig,target=/home/ubuntu/.gitconfig,type=bind,readonly"
+    "source=${localEnv:HOME}/.gitconfig,target=/home/ubuntu/.gitconfig,type=bind,readonly",
+    "source=${localEnv:HOME}/.cache/huggingface,target=/home/ubuntu/.cache/huggingface,type=bind,readonly"
   ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
   "workspaceFolder": "/workspace"
