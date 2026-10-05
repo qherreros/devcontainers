@@ -19,10 +19,13 @@ RUN apt-get update && \
 # Set up a non-root user for development
 ARG USERNAME=ubuntu
 
+# Make fish the login shell (works in Zed, VS Code, and plain docker exec)
+RUN chsh -s /usr/bin/fish $USERNAME
+
 # Switch to non-root user
 USER $USERNAME
 
-# Pre-create fish history directory so the named volume is initialized
+# Pre-create fish data directory so the bind mount target exists
 # with the correct ownership (created as ubuntu, not root)
 RUN mkdir -p /home/$USERNAME/.local/share/fish
 WORKDIR /workspace
@@ -30,10 +33,14 @@ WORKDIR /workspace
 # Update PATH to include uv
 ENV PATH="/home/$USERNAME/.local/bin:/home/$USERNAME/.cargo/bin:$PATH"
 
+# Docker's overlayfs does not support uv's hardlink cache; copy is expected here
+ENV UV_LINK_MODE=copy
+
 # Install UV, Python 3.10, and create venv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
     uv python install 3.10 && \
-    uv venv --python 3.10
+    uv venv --python 3.10 && \
+    uv tool install mistral-vibe
 
 # Default command and activate venv in fish
 CMD ["fish"]
